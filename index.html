@@ -1059,23 +1059,16 @@ fetch(SHEET_API_URL)
 
     products.forEach(product => {
       container.innerHTML += `
-        <div class="product">
-          <div class="product-img">
-            <img src="${product['Image URL']}" alt="">
-            <div class="product-label"><span class="new">${product.Label}</span></div>
-          </div>
-          <div class="product-body">
-            <p class="product-category">${product.Category}</p>
-            <h3 class="product-name"><a href="#">${product.Name}</a></h3>
-            <h4 class="product-price">$${product.Price} <del class="product-old-price">$${product["Old Price"]}</del></h4>
-            <div class="product-rating">
-              ${'★'.repeat(product.Rating)}${'☆'.repeat(5 - product.Rating)}
-            </div>
-          </div>
-          <div class="add-to-cart">
-            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-          </div>
-        </div>
+	  <div class="product-widget">
+									<div class="product-img">
+										<img src="./img/product01.png" alt="">
+									</div>
+									<div class="product-body">
+										<p class="product-category">${product.Category}</p>
+										<h3 class="product-name"><a href="#">${product.Name}</a></h3>
+										<h4 class="product-price">$${product.Price} <del class="product-old-price">$${product["Old Price"]}</del></h4>
+									</div>
+								</div>
       `;
     });
   });
