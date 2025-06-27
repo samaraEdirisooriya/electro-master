@@ -224,7 +224,7 @@
 							<div class="products-tabs">
 								<!-- tab -->
 								<div id="tab1" class="tab-pane active">
-									<div class="products-slick" id="product-list" data-nav="#slick-nav-1" style="display: flex;">
+									<div class="products-slick" id="product-list" data-nav="#slick-nav-1" style="display: flex; overflow-x: auto; gap: 16px; padding: 10px; scroll-behavior: smooth; scrollbar-width: none;">
 
 									</div>
 									<div id="slick-nav-1" class="products-slick-nav"></div>
@@ -940,39 +940,6 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         </div>
       `).join('');
-      container.innerHTML = productHTML;
-
-      setTimeout(() => {
-        $('#product-list').not('.slick-initialized').slick({
-          slidesToShow: 4,
-          slidesToScroll: 1,
-          autoplay: true,
-          autoplaySpeed: 2000,
-          infinite: true,
-          speed: 300,
-          dots: false,
-          arrows: true,
-          appendArrows: '#slick-nav-1',
-          swipe: true,
-          touchMove: true,
-          responsive: [
-            {
-              breakpoint: 991,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 480,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-              }
-            }
-          ]
-        });
-      }, 200); // Increased timeout slightly for rendering
     })
     .catch(err => console.error('Fetch error:', err));
 });
