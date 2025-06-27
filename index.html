@@ -224,17 +224,18 @@
 							<div class="products-tabs">
 								<!-- tab -->
 								<div id="tab1" class="tab-pane active">
-									<div class="products-slick" id="product-list" data-nav="#slick-nav-1" style="display: flex; ">
+									<div class="products-slick" id="product-list" data-nav="#slick-nav-1" style="display: flex; flex-wrap: nowrap; justify-content: space-between; width: 100%; padding: 20px; background-color: red;">
 										<!-- product -->
 										
 										<!-- /product -->
-									<!-- product -->
+
+										<!-- product -->
 machan
 										<!-- /product -->
 machan
 										<!-- product -->
 										
-										<!-- /product -->
+								zz		<!-- /product -->
 
 										<!-- product -->
 										
@@ -932,7 +933,11 @@ fetch(SHEET_API_URL)
     const productHTML = products.map(product => `
       <div class="product">
         <div class="product-img">
-          <img src="./img/product06.png" alt="" style="width: 100%; height: 200px; object-fit: cover;">
+			<div
+			style="width: 200px;background: blue; height: 200px; position: relative;">
+				<img src="./img/product06.png" alt="" style="width: 100%; height: 100%; object-fit: cover; position: relative;">
+				</div>
+          
           <div class="product-label">
             ${product.Label ? `<span class="new">${product.Label}</span>` : ''}
           </div>
@@ -959,15 +964,12 @@ fetch(SHEET_API_URL)
       $('#product-list').not('.slick-initialized').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
-        autoplay: true, // Enable auto-scroll
-        autoplaySpeed: 1000, // 2 seconds per scroll
+        autoplay: false,
         infinite: true,
         speed: 300,
         dots: false,
         arrows: true,
         appendArrows: '#slick-nav-1',
-        swipe: true, // Allow swipe/drag
-        touchMove: true, // Allow touch move
         responsive: [
           {
             breakpoint: 991,
