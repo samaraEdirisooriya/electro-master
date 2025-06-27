@@ -972,6 +972,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           ]
         });
+        // Force Slick to recalculate layout in case of rendering issues
+        $(window).trigger('resize');
       }, 200); // Increased timeout slightly for rendering
     })
     .catch(err => console.error('Fetch error:', err));
