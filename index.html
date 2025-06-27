@@ -921,6 +921,14 @@ machan
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/slick.min.js"></script>
+		<script src="js/nouislider.min.js"></script>
+		<script src="js/jquery.zoom.min.js"></script>
+		<script src="js/main.js"></script>
+
+		<!-- Custom product fetch and slick initialization -->
 		<script>
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyY_-lw77Nd32arYksPEIFMSlV0Lr4tJxuh1AT5Y5FBkCSYsejo_lU6HOdCbvLE95TO/exec";
 
@@ -928,8 +936,6 @@ fetch(SHEET_API_URL)
   .then(res => res.json())
   .then(products => {
     const container = document.getElementById('product-list');
-    
-    // Generate the full HTML once
     const productHTML = products.map(product => `
       <div class="product">
         <div class="product-img">
@@ -951,17 +957,13 @@ fetch(SHEET_API_URL)
         </div>
       </div>
     `).join('');
-
-    // Set it once to the container
     container.innerHTML = productHTML;
-
-    // Wait for DOM to render and then initialize slick
     setTimeout(() => {
       $('#product-list').not('.slick-initialized').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
-        autoplay: true, // Enable auto-scroll
-        autoplaySpeed: 2000, // 2 seconds per scroll
+        autoplay: true,
+        autoplaySpeed: 2000,
         infinite: true,
         speed: 300,
         dots: false,
@@ -986,18 +988,10 @@ fetch(SHEET_API_URL)
           }
         ]
       });
-    }, 100); // small delay to ensure DOM is ready
+    }, 100);
   })
   .catch(err => console.error('Fetch error:', err));
 </script>
-
-
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/slick.min.js"></script>
-		<script src="js/nouislider.min.js"></script>
-		<script src="js/jquery.zoom.min.js"></script>
-		<script src="js/main.js"></script>
 
 	</body>
 </html>
