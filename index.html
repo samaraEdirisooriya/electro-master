@@ -230,7 +230,7 @@
 										<!-- /product -->
 
 										<!-- product -->
-machan
+auto
 										<!-- /product -->
 machan
 										<!-- product -->
@@ -964,7 +964,8 @@ fetch(SHEET_API_URL)
       $('#product-list').not('.slick-initialized').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
-        autoplay: false,
+        autoplay: true, // Enable auto-scroll
+        autoplaySpeed: 2000, // 2 seconds per scroll (adjust as needed)
         infinite: true,
         speed: 300,
         dots: false,
