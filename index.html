@@ -926,11 +926,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       container.innerHTML = productHTML;
 
-      // Ensure DOM has rendered before Slick initializes
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          if (!$('#product-list').hasClass('slick-initialized')) {
-            $('#product-list').slick({
+          const $slider = $('#product-list');
+          if (!$slider.hasClass('slick-initialized')) {
+            $slider.slick({
               slidesToShow: 4,
               slidesToScroll: 1,
               autoplay: true,
@@ -959,8 +959,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               ]
             });
-            // Recalculate layout in case of hidden containers
-            $(window).trigger('resize');
+
+            // ✅ Force layout reflow to fix styling issues
+            setTimeout(() => {
+              $slider.slick('setPosition');
+            }, 0);
           }
         });
       });
@@ -968,6 +971,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(err => console.error('Fetch error:', err));
 });
 </script>
+
 
 	</body>
 </html>
