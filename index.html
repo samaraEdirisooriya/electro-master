@@ -901,10 +901,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(res => res.json())
     .then(products => {
       const container = document.getElementById('product-list');
+
       const productHTML = products.map(product => `
-        <div class="product-widget">
+        <div class="product" style="margin-left: 50px;">
           <div class="product-img">
-            <img src="./img/product06.png" alt="" style="width: 100%; height: 200px; object-fit: cover;">
+            <img src="${product.Image || './img/product06.png'}" alt="${product.Name}" style="width: 100%; height: 200px; object-fit: cover;">
             <div class="product-label">
               ${product.Label ? `<span class="new">${product.Label}</span>` : ''}
             </div>
@@ -922,41 +923,47 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         </div>
       `).join('');
+
       container.innerHTML = productHTML;
 
-      setTimeout(() => {
-        $('#product-list').not('.slick-initialized').slick({
-          slidesToShow: 4,
-          slidesToScroll: 1,
-          autoplay: true,
-          autoplaySpeed: 2000,
-          infinite: true,
-          speed: 300,
-          dots: false,
-          arrows: true,
-          appendArrows: '#slick-nav-1',
-          swipe: true,
-          touchMove: true,
-          responsive: [
-            {
-              breakpoint: 991,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 480,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-              }
-            }
-          ]
+      // Ensure DOM has rendered before Slick initializes
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (!$('#product-list').hasClass('slick-initialized')) {
+            $('#product-list').slick({
+              slidesToShow: 4,
+              slidesToScroll: 1,
+              autoplay: true,
+              autoplaySpeed: 2000,
+              infinite: true,
+              speed: 300,
+              dots: false,
+              arrows: true,
+              appendArrows: '#slick-nav-1',
+              swipe: true,
+              touchMove: true,
+              responsive: [
+                {
+                  breakpoint: 991,
+                  settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                  }
+                },
+                {
+                  breakpoint: 480,
+                  settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                  }
+                }
+              ]
+            });
+            // Recalculate layout in case of hidden containers
+            $(window).trigger('resize');
+          }
         });
-        // Force Slick to recalculate layout in case of rendering issues
-        $(window).trigger('resize');
-      }, 200); // Increased timeout slightly for rendering
+      });
     })
     .catch(err => console.error('Fetch error:', err));
 });
