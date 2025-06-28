@@ -43,7 +43,7 @@
 				<div class="container">
 					<ul class="header-links pull-left">
 						<li><a href="#"><i class="fa fa-phone"></i>+94787336580</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i> emaikikikil@email.com</a></li>
+						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
 						<li><a href="#"><i class="fa fa-map-marker"></i> No 108 Katugastota Rd, Kandy</a></li>
 					</ul>
 					
@@ -894,11 +894,44 @@
 
 		<!-- Custom product fetch and slick initialization -->
 		<script>
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    const $slider = $('#product-list');
-    if ($slider.is(':visible') && !$slider.hasClass('slick-initialized')) {
-      $slider.slick({
+document.addEventListener("DOMContentLoaded", function () {
+  const SHEET_API_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Replace with your real URL
+
+  fetch(SHEET_API_URL)
+    .then(res => res.json())
+    .then(products => {
+      const container = document.getElementById("product-list");
+      if (!Array.isArray(products) || products.length === 0) {
+        container.innerHTML = "<p>No products found</p>";
+        return;
+      }
+
+      const productHTML = products.map(product => `
+        <div class="product">
+          <div class="product-img">
+            <img src="${product.Image || './img/product06.png'}" alt="${product.Name}" style="width: 100%; height: 200px; object-fit: cover;">
+            <div class="product-label">
+              ${product.Label ? `<span class="new">${product.Label}</span>` : ""}
+            </div>
+          </div>
+          <div class="product-body">
+            <p class="product-category">${product.Category}</p>
+            <h3 class="product-name"><a href="#">${product.Name}</a></h3>
+            <h4 class="product-price">$${product.Price} <del class="product-old-price">$${product["Old Price"]}</del></h4>
+            <div class="product-rating">
+              ${"★".repeat(product.Rating)}${"☆".repeat(5 - product.Rating)}
+            </div>
+          </div>
+          <div class="add-to-cart">
+            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+          </div>
+        </div>
+      `).join("");
+
+      container.innerHTML = productHTML;
+
+      const $slider = $('#product-list');
+      $slider.not('.slick-initialized').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
         autoplay: true,
@@ -917,15 +950,12 @@ requestAnimationFrame(() => {
       });
 
       setTimeout(() => $slider.slick('setPosition'), 0);
-    }
-  });
+    })
+    .catch(err => {
+      console.error("Fetch error:", err);
+      document.getElementById("product-list").innerHTML = "<p>Error loading products</p>";
+    });
 });
-
-// 🔁 This ensures it works when user clicks a tab
-$('a[data-toggle="tab"]').on('shown.bs.tab', function () {
-  $('#product-list').slick('setPosition');
-});
-
 </script>
 
 
