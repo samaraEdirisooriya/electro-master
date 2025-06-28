@@ -50,44 +50,7 @@
   flex: 0 0 25%; /* 100% / 4 = 25% per item */
   box-sizing: border-box;
   padding: 10px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
 
-/* Medium screens: show 2 items */
-@media (max-width: 991px) {
-  .product {
-    flex: 0 0 50%;
-  }
-}
-
-/* Small screens: show 1 item */
-@media (max-width: 480px) {
-  .product {
-    flex: 0 0 100%;
-  }
-}
-</style><style>
-.product-scroll-wrapper {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 16px;
-  padding: 10px;
-  scrollbar-width: none;
-}
-.product-scroll-wrapper::-webkit-scrollbar {
-  display: none;
-}
-
-.product {
-  flex: 0 0 25%; /* 100% / 4 = 25% per item */
-  box-sizing: border-box;
-  padding: 10px;
-  background: rgb(255, 0, 0);
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
 /* Medium screens: show 2 items */
@@ -965,8 +928,9 @@
 		<!-- Custom product fetch and slick initialization -->
 		<script>
 document.addEventListener("DOMContentLoaded", function () {
-  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyY_-lw77Nd32arYksPEIFMSlV0Lr4tJxuh1AT5Y5FBkCSYsejo_lU6HOdCbvLE95TO/exec"; // Replace with your own
+  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyY_-lw77Nd32arYksPEIFMSlV0Lr4tJxuh1AT5Y5FBkCSYsejo_lU6HOdCbvLE95TO/exec";
   const container = document.getElementById("product-list");
+  let scrollInterval;
 
   fetch(SHEET_API_URL)
     .then(res => res.json())
@@ -982,20 +946,31 @@ document.addEventListener("DOMContentLoaded", function () {
       `).join('');
       container.innerHTML = productHTML;
 
-      startAutoScroll(container);
+      // Start scrolling
+      startAutoScroll();
     });
 
-  function startAutoScroll(container) {
-    let scrollPos = 0;
-    const speed = 1; // pixels per interval
-    setInterval(() => {
-      scrollPos += speed;
-      if (scrollPos >= container.scrollWidth - container.clientWidth) {
-        scrollPos = 0; // reset
+  function startAutoScroll() {
+    stopAutoScroll(); // clear if already running
+    scrollInterval = setInterval(() => {
+      if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+        container.scrollLeft = 0;
+      } else {
+        container.scrollLeft += 1;
       }
-      container.scrollLeft = scrollPos;
-    }, 30); // speed control (30ms = ~33fps)
+    }, 20); // Adjust for scroll speed
   }
+
+  function stopAutoScroll() {
+    if (scrollInterval) {
+      clearInterval(scrollInterval);
+      scrollInterval = null;
+    }
+  }
+
+  // Pause/resume on hover
+  container.addEventListener("mouseenter", stopAutoScroll);
+  container.addEventListener("mouseleave", startAutoScroll);
 });
 </script>
 
