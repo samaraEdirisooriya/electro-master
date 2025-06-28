@@ -33,7 +33,77 @@
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
+<style>
+.product-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding: 10px;
+  scrollbar-width: none;
+}
+.product-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
 
+.product {
+  flex: 0 0 25%; /* 100% / 4 = 25% per item */
+  box-sizing: border-box;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Medium screens: show 2 items */
+@media (max-width: 991px) {
+  .product {
+    flex: 0 0 50%;
+  }
+}
+
+/* Small screens: show 1 item */
+@media (max-width: 480px) {
+  .product {
+    flex: 0 0 100%;
+  }
+}
+</style><style>
+.product-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding: 10px;
+  scrollbar-width: none;
+}
+.product-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.product {
+  flex: 0 0 25%; /* 100% / 4 = 25% per item */
+  box-sizing: border-box;
+  padding: 10px;
+  background: rgb(255, 0, 0);
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Medium screens: show 2 items */
+@media (max-width: 991px) {
+  .product {
+    flex: 0 0 50%;
+  }
+}
+
+/* Small screens: show 1 item */
+@media (max-width: 480px) {
+  .product {
+    flex: 0 0 100%;
+  }
+}
+</style>
     </head>
 	<body>
 		<!-- HEADER -->
@@ -224,7 +294,7 @@
 							<div class="products-tabs">
 								<!-- tab -->
 								<div id="tab1" class="tab-pane active">
-									<div class="products-slick" id="product-list" data-nav="#slick-nav-1" style="width:100%;">
+									<div class="product-scroll-wrapper" id="product-list" >
 
 									</div>
 									<div id="slick-nav-1" class="products-slick-nav"></div>
@@ -895,83 +965,40 @@
 		<!-- Custom product fetch and slick initialization -->
 		<script>
 document.addEventListener("DOMContentLoaded", function () {
-  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyY_-lw77Nd32arYksPEIFMSlV0Lr4tJxuh1AT5Y5FBkCSYsejo_lU6HOdCbvLE95TO/exec";
+  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyY_-lw77Nd32arYksPEIFMSlV0Lr4tJxuh1AT5Y5FBkCSYsejo_lU6HOdCbvLE95TO/exec"; // Replace with your own
+  const container = document.getElementById("product-list");
 
   fetch(SHEET_API_URL)
     .then(res => res.json())
     .then(products => {
-      const container = document.getElementById("product-list");
-
       const productHTML = products.map(product => `
         <div class="product">
-          <div class="product-img">
-            <img src="${product.Image || './img/product06.png'}" alt="${product.Name}" style="width: 100%; height: 200px; object-fit: cover;">
-            <div class="product-label">
-              ${product.Label ? `<span class="new">${product.Label}</span>` : ''}
-            </div>
-          </div>
-          <div class="product-body">
-            <p class="product-category">${product.Category}</p>
-            <h3 class="product-name"><a href="#">${product.Name}</a></h3>
-            <h4 class="product-price">$${product.Price} <del class="product-old-price">$${product["Old Price"]}</del></h4>
-            <div class="product-rating">
-              ${'★'.repeat(product.Rating)}${'☆'.repeat(5 - product.Rating)}
-            </div>
-          </div>
-          <div class="add-to-cart">
-            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-          </div>
+          <img src="${product.Image}" alt="${product.Name}" style="width: 100%; height: 160px; object-fit: cover;">
+          <h4>${product.Name}</h4>
+          <p>${product.Category}</p>
+          <p><strong>$${product.Price}</strong> <del>$${product["Old Price"]}</del></p>
+          <p style="color: gold;">${'★'.repeat(product.Rating)}${'☆'.repeat(5 - product.Rating)}</p>
         </div>
       `).join('');
-
       container.innerHTML = productHTML;
 
-      // Wait until container is visible
-      function waitForVisibleAndInitSlick(retries = 10) {
-        const $slider = $('#product-list');
-        const isVisible = $slider.is(':visible') && $slider.width() > 0;
-
-        if (!isVisible && retries > 0) {
-          setTimeout(() => waitForVisibleAndInitSlick(retries - 1), 200); // retry after 200ms
-          return;
-        }
-
-        if (!$slider.hasClass('slick-initialized')) {
-          $slider.slick({
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 2000,
-            infinite: true,
-            speed: 300,
-            dots: false,
-            arrows: true,
-            appendArrows: '#slick-nav-1',
-            swipe: true,
-            touchMove: true,
-            responsive: [
-              { breakpoint: 991, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-              { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } }
-            ]
-          });
-
-          setTimeout(() => $slider.slick('setPosition'), 0);
-        }
-      }
-
-      waitForVisibleAndInitSlick(); // ✅ Initialize slick when ready
-    })
-    .catch(err => {
-      console.error("Fetch error:", err);
-      document.getElementById("product-list").innerHTML = "<p>Error loading products</p>";
+      startAutoScroll(container);
     });
 
-  // 🔁 Recalculate layout if tab becomes visible (Bootstrap tab fix)
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
-    $('#product-list').slick('setPosition');
-  });
+  function startAutoScroll(container) {
+    let scrollPos = 0;
+    const speed = 1; // pixels per interval
+    setInterval(() => {
+      scrollPos += speed;
+      if (scrollPos >= container.scrollWidth - container.clientWidth) {
+        scrollPos = 0; // reset
+      }
+      container.scrollLeft = scrollPos;
+    }, 30); // speed control (30ms = ~33fps)
+  }
 });
 </script>
+
 
 
 	</body>
