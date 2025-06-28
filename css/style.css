@@ -1075,6 +1075,27 @@ textarea.input {
   visibility: visible;
 }
 
+/* Fix add-to-cart button for horizontal scroll layout */
+.product .add-to-cart {
+  position: static !important;
+  left: unset !important;
+  right: unset !important;
+  bottom: unset !important;
+  padding: 10px 0 0 0 !important;
+  background: none !important;
+  text-align: center;
+  transform: none !important;
+  transition: none !important;
+}
+.product .add-to-cart .add-to-cart-btn {
+  width: 100%;
+  border-radius: 20px;
+  margin: 0 auto;
+}
+.product:hover .add-to-cart {
+  transform: none !important;
+}
+
 /*----------------------------*\
 	Widget product
 \*----------------------------*/
