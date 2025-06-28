@@ -937,11 +937,23 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(products => {
       const productHTML = products.map(product => `
         <div class="product">
-          <img src="${product.Image}" alt="${product.Name}" style="width: 100%; height: 160px; object-fit: cover;">
-          <h4>${product.Name}</h4>
-          <p>${product.Category}</p>
-          <p><strong>$${product.Price}</strong> <del>$${product["Old Price"]}</del></p>
-          <p style="color: gold;">${'★'.repeat(product.Rating)}${'☆'.repeat(5 - product.Rating)}</p>
+          <div class="product-img">
+            <img src="${product.Image || './img/product06.png'}" alt="${product.Name}" style="width: 100%; height: 200px; object-fit: cover;">
+            <div class="product-label">
+              ${product.Label ? `<span class="new">${product.Label}</span>` : ''}
+            </div>
+          </div>
+          <div class="product-body">
+            <p class="product-category">${product.Category}</p>
+            <h3 class="product-name"><a href="#">${product.Name}</a></h3>
+            <h4 class="product-price">$${product.Price} <del class="product-old-price">$${product["Old Price"]}</del></h4>
+            <div class="product-rating">
+              ${'★'.repeat(product.Rating)}${'☆'.repeat(5 - product.Rating)}
+            </div>
+          </div>
+          <div class="add-to-cart">
+            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+          </div>
         </div>
       `).join('');
       container.innerHTML = productHTML;
