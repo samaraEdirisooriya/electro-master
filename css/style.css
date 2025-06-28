@@ -1016,9 +1016,6 @@ textarea.input {
 
 .product .add-to-cart {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 1px;
   padding: 15px;
   background: #1e1f2900;
   text-align: center;
@@ -1027,7 +1024,7 @@ textarea.input {
   transform: translateY(0%);
   -webkit-transition: 0.2s all;
   transition: 0.2s all;
-  z-index: 10;
+  z-index: 0;
 }
 
 .product:hover .add-to-cart {
@@ -1073,27 +1070,6 @@ textarea.input {
 .product .add-to-cart .add-to-cart-btn:hover>i {
   opacity: 1;
   visibility: visible;
-}
-
-/* Fix add-to-cart button for horizontal scroll layout */
-.product .add-to-cart {
-  position: static !important;
-  left: unset !important;
-  right: unset !important;
-  bottom: unset !important;
-  padding: 10px 0 0 0 !important;
-  background: none !important;
-  text-align: center;
-  transform: none !important;
-  transition: none !important;
-}
-.product .add-to-cart .add-to-cart-btn {
-  width: 100%;
-  border-radius: 20px;
-  margin: 0 auto;
-}
-.product:hover .add-to-cart {
-  transform: none !important;
 }
 
 /*----------------------------*\
