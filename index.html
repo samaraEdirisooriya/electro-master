@@ -43,7 +43,7 @@
 				<div class="container">
 					<ul class="header-links pull-left">
 						<li><a href="#"><i class="fa fa-phone"></i>+94787336580</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
+						<li><a href="#"><i class="fa fa-envelope-o"></i> emaidsasdl@email.com</a></li>
 						<li><a href="#"><i class="fa fa-map-marker"></i> No 108 Katugastota Rd, Kandy</a></li>
 					</ul>
 					
@@ -895,23 +895,18 @@
 		<!-- Custom product fetch and slick initialization -->
 		<script>
 document.addEventListener("DOMContentLoaded", function () {
-  const SHEET_API_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Replace with your real URL
+  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyY_-lw77Nd32arYksPEIFMSlV0Lr4tJxuh1AT5Y5FBkCSYsejo_lU6HOdCbvLE95TO/exec";// Replace this
 
   fetch(SHEET_API_URL)
     .then(res => res.json())
     .then(products => {
       const container = document.getElementById("product-list");
-      if (!Array.isArray(products) || products.length === 0) {
-        container.innerHTML = "<p>No products found</p>";
-        return;
-      }
-
       const productHTML = products.map(product => `
         <div class="product">
           <div class="product-img">
             <img src="${product.Image || './img/product06.png'}" alt="${product.Name}" style="width: 100%; height: 200px; object-fit: cover;">
             <div class="product-label">
-              ${product.Label ? `<span class="new">${product.Label}</span>` : ""}
+              ${product.Label ? `<span class="new">${product.Label}</span>` : ''}
             </div>
           </div>
           <div class="product-body">
@@ -919,45 +914,58 @@ document.addEventListener("DOMContentLoaded", function () {
             <h3 class="product-name"><a href="#">${product.Name}</a></h3>
             <h4 class="product-price">$${product.Price} <del class="product-old-price">$${product["Old Price"]}</del></h4>
             <div class="product-rating">
-              ${"★".repeat(product.Rating)}${"☆".repeat(5 - product.Rating)}
+              ${'★'.repeat(product.Rating)}${'☆'.repeat(5 - product.Rating)}
             </div>
           </div>
           <div class="add-to-cart">
             <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
           </div>
         </div>
-      `).join("");
+      `).join('');
 
+      // Inject HTML into DOM
       container.innerHTML = productHTML;
 
-      const $slider = $('#product-list');
-      $slider.not('.slick-initialized').slick({
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        infinite: true,
-        speed: 300,
-        dots: false,
-        arrows: true,
-        appendArrows: '#slick-nav-1',
-        swipe: true,
-        touchMove: true,
-        responsive: [
-          { breakpoint: 991, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-          { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } }
-        ]
-      });
+      // Wait for DOM render, then init slick
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const $slider = $('#product-list');
+          if ($slider.is(':visible') && !$slider.hasClass('slick-initialized')) {
+            $slider.slick({
+              slidesToShow: 4,
+              slidesToScroll: 1,
+              autoplay: true,
+              autoplaySpeed: 2000,
+              infinite: true,
+              speed: 300,
+              dots: false,
+              arrows: true,
+              appendArrows: '#slick-nav-1',
+              swipe: true,
+              touchMove: true,
+              responsive: [
+                { breakpoint: 991, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+                { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } }
+              ]
+            });
 
-      setTimeout(() => $slider.slick('setPosition'), 0);
+            // Fix layout issues if hidden initially
+            setTimeout(() => $slider.slick('setPosition'), 0);
+          }
+        });
+      });
     })
     .catch(err => {
       console.error("Fetch error:", err);
       document.getElementById("product-list").innerHTML = "<p>Error loading products</p>";
     });
+
+  // 🔁 Handle tab activation
+  $('a[data-toggle=\"tab\"]').on('shown.bs.tab', function () {
+    $('#product-list').slick('setPosition');
+  });
 });
 </script>
-
 
 	</body>
 </html>
