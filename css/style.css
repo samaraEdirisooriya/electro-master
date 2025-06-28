@@ -1016,6 +1016,9 @@ textarea.input {
 
 .product .add-to-cart {
   position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 1px;
   padding: 15px;
   background: #1e1f2900;
   text-align: center;
@@ -1024,7 +1027,7 @@ textarea.input {
   transform: translateY(0%);
   -webkit-transition: 0.2s all;
   transition: 0.2s all;
-  z-index: 0;
+  z-index: 10;
 }
 
 .product:hover .add-to-cart {
@@ -1033,13 +1036,12 @@ textarea.input {
   transform: translateY(100%);
     background: #1e1f29;
 }
-
 .product .add-to-cart .add-to-cart-btn {
   position: relative;
   border: 2px solid transparent;
   height: 40px;
   padding: 0 30px;
-  background-color: #e10c25;
+  background-color: #ef233c;
   color: #FFF;
   text-transform: uppercase;
   font-weight: 700;
